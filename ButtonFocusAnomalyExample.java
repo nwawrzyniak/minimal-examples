@@ -10,8 +10,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 
-public class AnyFrame extends JFrame {
-    public AnyFrame() {
+public class ButtonFocusAnomalyExample extends JFrame {
+    public ButtonFocusAnomalyExample() {
         super();
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         int frameWidth = 300;
@@ -26,13 +26,11 @@ public class AnyFrame extends JFrame {
         Container cp = getContentPane();
         cp.setLayout(null);
         setVisible(true);
-
-        // The only important line in this class
-        new DialogMinimal(this, true);
+        new DialogMinimal(this, true); // Runs the Dialog
     }
 
     public static void main(String[] args) {
-        new AnyFrame();
+        new ButtonFocusAnomalyExample();
     }
 
     static class DialogMinimal extends JDialog {
@@ -62,8 +60,8 @@ public class AnyFrame extends JFrame {
             bNo.setBounds(108, 0, 120, 33);
             bNo.setText("No (Enter/Return)");
             bNo.setMargin(new Insets(2, 2, 2, 2));
-            getRootPane().setDefaultButton(bNo);
-            bNo.requestFocus();
+            getRootPane().setDefaultButton(bNo); // Set "No" as default button
+            bNo.requestFocus(); // Get focus on "No" button
             bNo.addActionListener(this::bNo_ActionPerformed);
             buttonPanel.add(bNo);
             buttonPanel.setBounds(8, 8, 400, 92);
@@ -76,11 +74,11 @@ public class AnyFrame extends JFrame {
         }
 
         public void bYes_ActionPerformed(final ActionEvent evt) {
-            output.setText("Yes");
+            output.setText("Yes"); // Fires on every space bar press
         }
 
         public void bNo_ActionPerformed(final ActionEvent evt) {
-            output.setText("No");
+            output.setText("No"); // Fires on every return/enter press
         }
     }
 }

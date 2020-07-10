@@ -10,6 +10,12 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 
+/**
+ * Solved. Not an anomaly.
+ *
+ * TL;DR: You can't request focus on an element in a modal Dialog.
+ * If modal is set to false, behaviour is as expected.
+ */
 public class ButtonFocusAnomalyExample extends JFrame {
     public ButtonFocusAnomalyExample() {
         super();
@@ -26,7 +32,8 @@ public class ButtonFocusAnomalyExample extends JFrame {
         Container cp = getContentPane();
         cp.setLayout(null);
         setVisible(true);
-        new DialogMinimal(this, true); // Runs the Dialog
+        new DialogMinimal(this, false); // Runs the Dialog and behaviour is normal
+        //new DialogMinimal(this, true); // Runs the Dialog but focus isn't placed on button
     }
 
     public static void main(String[] args) {
@@ -39,7 +46,7 @@ public class ButtonFocusAnomalyExample extends JFrame {
         public DialogMinimal(final JFrame owner, final boolean modal) {
             super(owner, modal);
             setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-            int frameWidth = 252;
+            int frameWidth = 292;
             int frameHeight = 126;
             setSize(frameWidth, frameHeight);
             Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
@@ -50,27 +57,25 @@ public class ButtonFocusAnomalyExample extends JFrame {
             Container cp = getContentPane();
             cp.setLayout(null);
             JButton bYes = new JButton();
-            bYes.setBounds(0, 0, 100, 33);
+            bYes.setBounds(0, 0, 120, 33);
             bYes.setText("Yes (Space)");
-            bYes.setMargin(new Insets(2, 2, 2, 2));
             bYes.addActionListener(this::bYes_ActionPerformed);
             JPanel buttonPanel = new JPanel(null, true);
             buttonPanel.add(bYes);
             JButton bNo = new JButton();
-            bNo.setBounds(108, 0, 120, 33);
+            bNo.setBounds(128, 0, 140, 33);
             bNo.setText("No (Enter/Return)");
-            bNo.setMargin(new Insets(2, 2, 2, 2));
-            getRootPane().setDefaultButton(bNo); // Set "No" as default button
-            bNo.requestFocus(); // Get focus on "No" button
+            getRootPane().setDefaultButton(bNo);
             bNo.addActionListener(this::bNo_ActionPerformed);
             buttonPanel.add(bNo);
             buttonPanel.setBounds(8, 8, 400, 92);
             buttonPanel.setOpaque(false);
             cp.add(buttonPanel);
-            output.setBounds(8, 50, 220, 32);
+            output.setBounds(8, 50, 270, 32);
             cp.add(output);
             setResizable(false);
             setVisible(true);
+            bNo.requestFocusInWindow();
         }
 
         public void bYes_ActionPerformed(final ActionEvent evt) {
